@@ -1,5 +1,3 @@
 eclipse.preferences.version=1
-encoding//WebContent/index.jsp=UTF-8
-encoding//src/cal/PeriodAmount.java=UTF-8
-encoding//src/cal/TotalScedule.java=UTF-8
+encoding/WebContent=UTF-8
 encoding/src=UTF-8
