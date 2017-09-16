@@ -16,7 +16,7 @@ public class TotalScedule
     private double d1_all_loan = 12000;
     private double d2_real_rate = 0.18;
     private int d3_total_Period = 36;
-    private int d4_period_days = 0;  // 0=°´×ÔÈ»ÔÂ»¹£¬ 1-365=°´ÌìÊıÖÜÆÚ»¹£¬-1=°´ºóÃæµÄ»¹¿îÌì±í
+    private int d4_period_days = 0;  // 0=æŒ‰è‡ªç„¶æœˆè¿˜ï¼Œ 1-365=æŒ‰å¤©æ•°å‘¨æœŸè¿˜ï¼Œ-1=æŒ‰åé¢çš„è¿˜æ¬¾å¤©è¡¨
     private double d6_period_amount = 0.0;
     private double d6_period_amount_round = 0;
     private Date d5_start_date;
@@ -24,9 +24,9 @@ public class TotalScedule
     private PeriodAmount[] periodAmounts = null;//array();
 
     /**
-     * »ñÈ¡ÏÖÔÚÊ±¼ä
+     * è·å–ç°åœ¨æ—¶é—´
      *
-     * @return·µ»Ø¶ÌÊ±¼ä¸ñÊ½ yyyy-MM-dd
+     * @returnè¿”å›çŸ­æ—¶é—´æ ¼å¼ yyyy-MM-dd
      */
     private static Date getDateShort() 
     {
@@ -83,8 +83,8 @@ public class TotalScedule
         
         d1_all_loan = all_loan;
         d2_real_rate = real_rate;
-        d3_total_Period = total_Period; // ²»ÄÜĞ¡ÓÚ1
-        d4_period_days = period_days; // 0=°´×ÔÈ»ÔÂ»¹£¬ 1-365=°´ÌìÊıÖÜÆÚ»¹£¬-1=°´ºóÃæµÄ»¹¿îÌì±í
+        d3_total_Period = total_Period; // ä¸èƒ½å°äº1
+        d4_period_days = period_days; // 0=æŒ‰è‡ªç„¶æœˆè¿˜ï¼Œ 1-365=æŒ‰å¤©æ•°å‘¨æœŸè¿˜ï¼Œ-1=æŒ‰åé¢çš„è¿˜æ¬¾å¤©è¡¨
         period_days_array = t_period_days_array;
         
         // date_default_timezone_set("Asia/Shanghai");
@@ -93,14 +93,14 @@ public class TotalScedule
         Date a_date = getDateShort(start_date);  
         
         if ( a_date == null )
-        { // Èç¹ûÃ»ÓĞ´«µİ¿ªÊ¼ÈÕÆÚ£¬»òÕß´íÎóµÄ¿ªÊ¼ÈÕÆÚ£¬ÔòÉèÖÃµ±Ç°ÈÕÆÚÎª¿ªÊ¼ÈÕÆÚ
+        { // å¦‚æœæ²¡æœ‰ä¼ é€’å¼€å§‹æ—¥æœŸï¼Œæˆ–è€…é”™è¯¯çš„å¼€å§‹æ—¥æœŸï¼Œåˆ™è®¾ç½®å½“å‰æ—¥æœŸä¸ºå¼€å§‹æ—¥æœŸ
         	a_date=getDateShort(null); // "Y-m-d 2017-01-09 Y n j 2017-1-9" // date_date_set($date,2020,10,15);
         }
         
         d5_start_date = a_date;
         
         periodAmounts = null;
-        periodAmounts = new PeriodAmount[d3_total_Period+2]; // ÆäÊµ d3_total_Period+1¾Í×ã¹»ÁË
+        periodAmounts = new PeriodAmount[d3_total_Period+2]; // å…¶å® d3_total_Period+1å°±è¶³å¤Ÿäº†
         
         periodAmounts[0] = new PeriodAmount();
         periodAmounts[0].setPeriodDate(d5_start_date,0);
@@ -109,25 +109,25 @@ public class TotalScedule
         for (int x=1; x <= d3_total_Period; x++) 
         {
             periodAmounts[x] = new PeriodAmount();
-            periodAmounts[x].setPeriodDate(d5_start_date, x, d4_period_days, period_days_array);       // ¸³Öµ½è¿îÈÕºÍ±¾ÆÚ»¹¿îÈÕ¡¢±¾ÆÚÆÚÊı
-            periodAmounts[x].fixDueDays(periodAmounts[x-1].getPeriodDate()); // ĞŞÕı±¾ÆÚÌìÊı
+            periodAmounts[x].setPeriodDate(d5_start_date, x, d4_period_days, period_days_array);       // èµ‹å€¼å€Ÿæ¬¾æ—¥å’Œæœ¬æœŸè¿˜æ¬¾æ—¥ã€æœ¬æœŸæœŸæ•°
+            periodAmounts[x].fixDueDays(periodAmounts[x-1].getPeriodDate()); // ä¿®æ­£æœ¬æœŸå¤©æ•°
             periodAmounts[x].fix_z_1_B(d2_real_rate);
         }
         
-        periodAmounts[d3_total_Period+1] = new PeriodAmount(); // ¶àÉú³ÉÒ»¸ö£¬data_due_z_1_B = 1£»
+        periodAmounts[d3_total_Period+1] = new PeriodAmount(); // å¤šç”Ÿæˆä¸€ä¸ªï¼Œdata_due_z_1_B = 1ï¼›
         
-        double sum_z_pai = 0; // ´Ó 2 µ½ µÚ 25 ¸ö z_pai ÇóºÍ
+        double sum_z_pai = 0; // ä» 2 åˆ° ç¬¬ 25 ä¸ª z_pai æ±‚å’Œ
         
         for (int x=d3_total_Period; x >= 1; x--) 
         {
         	double mult_pai = periodAmounts[x+1].get_z_pai();
             periodAmounts[x].set_z_pai( mult_pai );
-            sum_z_pai = sum_z_pai + mult_pai; // ´Ó 2 µ½ µÚ 25 ¸ö z_pai ÇóºÍ
+            sum_z_pai = sum_z_pai + mult_pai; // ä» 2 åˆ° ç¬¬ 25 ä¸ª z_pai æ±‚å’Œ
         }
         
-        double first_z_pai = this.periodAmounts[1].get_z_pai(); //  µÚ1 ¸ö z_pai
-        d6_period_amount = d1_all_loan * first_z_pai / sum_z_pai; // Çó¾«È·ÔÂ¹©
-//        d6_period_amount_round = round( d6_period_amount, 2, PHP_ROUND_HALF_UP ); // ÇóËÄÉáÎåÈëµ½·ÖÔÂ¹©
+        double first_z_pai = this.periodAmounts[1].get_z_pai(); //  ç¬¬1 ä¸ª z_pai
+        d6_period_amount = d1_all_loan * first_z_pai / sum_z_pai; // æ±‚ç²¾ç¡®æœˆä¾›
+//        d6_period_amount_round = round( d6_period_amount, 2, PHP_ROUND_HALF_UP ); // æ±‚å››èˆäº”å…¥åˆ°åˆ†æœˆä¾›
         
        // JAVA BEGIN
         //BigDecimal bg = new BigDecimal(d6_period_amount);

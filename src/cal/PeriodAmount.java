@@ -13,16 +13,16 @@ import java.util.Date;
 public class PeriodAmount 
 {
     private int data_period_num = 0;
-    private Date data_start_date;// = date_create();       // ´û¿îÊ×ÆÚ½è¿îÈÕÆÚ
-    private Date data_period_date;// = date_create();      // ´û¿î±¾ÆÚ»¹¿îÈÕÆÚ
-    private double data_period_principal = 0;              // ±¾ÆÚ×ÜÇ·±¾½ğ
-    private int data_due_days = 0;                         // ±¾ÆÚ½è¿îÌìÊı
-    private double data_due_principal = 0;                 // ±¾ÆÚÓ¦»¹±¾½ğ
-    private double data_due_interest_real = 0.0;           // ±¾ÆÚÓ¦»¹ÀûÏ¢_Ô­Ê¼Ğ¡Êı
-    private double data_due_interest = 0.0;                // ±¾ÆÚÓ¦»¹ÀûÏ¢_È¡Õû
-    private double data_due_amount = 0;                    // ±¾ÆÚÓ¦»¹±¾Ï¢
-    private double data_z_1_B = 1;                         // ±¾ÆÚ±¾Ï¢ÂÊ = 1 + ÄêÂÊ /360* ±¾ÆÚÌìÊı
-    private double data_z_pai = 1;                         // <±¾Ï¢ÂÊ>Á¬³Ë»ı
+    private Date data_start_date;// = date_create();       // è´·æ¬¾é¦–æœŸå€Ÿæ¬¾æ—¥æœŸ
+    private Date data_period_date;// = date_create();      // è´·æ¬¾æœ¬æœŸè¿˜æ¬¾æ—¥æœŸ
+    private double data_period_principal = 0;              // æœ¬æœŸæ€»æ¬ æœ¬é‡‘
+    private int data_due_days = 0;                         // æœ¬æœŸå€Ÿæ¬¾å¤©æ•°
+    private double data_due_principal = 0;                 // æœ¬æœŸåº”è¿˜æœ¬é‡‘
+    private double data_due_interest_real = 0.0;           // æœ¬æœŸåº”è¿˜åˆ©æ¯_åŸå§‹å°æ•°
+    private double data_due_interest = 0.0;                // æœ¬æœŸåº”è¿˜åˆ©æ¯_å–æ•´
+    private double data_due_amount = 0;                    // æœ¬æœŸåº”è¿˜æœ¬æ¯
+    private double data_z_1_B = 1;                         // æœ¬æœŸæœ¬æ¯ç‡ = 1 + å¹´ç‡ /360* æœ¬æœŸå¤©æ•°
+    private double data_z_pai = 1;                         // <æœ¬æ¯ç‡>è¿ä¹˜ç§¯
     
     public PeriodAmount()
     {
@@ -31,25 +31,22 @@ public class PeriodAmount
     }
     
     public void setPeriodPrincipal(double principal)
-    { // ÉèÖÃ±¾ÆÚ×ÜÇ·¿î±¾½ğ
+    { // è®¾ç½®æœ¬æœŸæ€»æ¬ æ¬¾æœ¬é‡‘
         data_period_principal = principal;
     }
     
     public double getNextPeriodPrincipal()
-    { // ¼ÆËãÏÂÆÚ×ÜÇ·¿î±¾½ğ
+    { // è®¡ç®—ä¸‹æœŸæ€»æ¬ æ¬¾æœ¬é‡‘
         return data_period_principal - data_due_principal;
     }
     
     public void cal_principal_interest(double new_principal, double rate, double per_amount_round)
-    { // ¼ÆËã±¾ÆÚÓ¦»¹±¾½ğ¡¢ÀûÏ¢¡¢Ê£Óà±¾½ğ¡£
-    	new_principal = wjutil.Tools.round(new_principal,4); // Ã¿ÆÚÊ£Óà±¾½ğ²»¿ÉÄÜÎª³¤Ğ¡Êı£¬°ÑÄ©Î²Ğ¡ÊıÈ¥³ı
+    { // è®¡ç®—æœ¬æœŸåº”è¿˜æœ¬é‡‘ã€åˆ©æ¯ã€å‰©ä½™æœ¬é‡‘ã€‚
+    	data_period_principal = wjutil.Tools.round(new_principal,4);     // æœ¬æœŸæ€»æ¬ æœ¬é‡‘// æ¯æœŸå‰©ä½™æœ¬é‡‘ä¸å¯èƒ½ä¸ºé•¿å°æ•°ï¼ŒæŠŠæœ«å°¾å°æ•°å»é™¤
+        data_due_interest_real = data_period_principal * data_due_days * rate / 360.0;  // æœ¬æœŸç²¾ç¡®åº”è¿˜åˆ©æ¯å–æ•´
 
-    	data_period_principal = new_principal;                          // ±¾ÆÚ×ÜÇ·±¾½ğ
-        data_due_interest_real = new_principal * data_due_days * rate / 360.0;  // ±¾ÆÚ¾«È·Ó¦»¹ÀûÏ¢È¡Õû
-
-        
         // PHP BEGIN
-        // double new_interest_round = round( new_interest, 2, PHP_ROUND_HALF_UP );     // ±¾ÆÚÓ¦»¹ÀûÏ¢È¡Õû
+        // double new_interest_round = round( new_interest, 2, PHP_ROUND_HALF_UP );     // æœ¬æœŸåº”è¿˜åˆ©æ¯å–æ•´
         // PHP END
         
         // JAVA BEGIN
@@ -57,10 +54,10 @@ public class PeriodAmount
         //double new_interest_round = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         // Java END
         
-        data_due_interest = wjutil.Tools.round(data_due_interest_real,2);  // ±¾ÆÚÓ¦»¹ÀûÏ¢È¡Õû
+        data_due_interest = wjutil.Tools.round(data_due_interest_real,2);  // æœ¬æœŸåº”è¿˜åˆ©æ¯å–æ•´
         data_due_principal = wjutil.Tools.round( per_amount_round - data_due_interest,2 );
         
-        if ( data_due_principal > data_period_principal ) // ĞŞÕı±¾ÆÚÓ¦»¹±¾½ğ£¬Èç¹ûÓ¦»¹±¾½ğ£¬´óÓÚÊ£Óà±¾½ğ£¬¾ÍÊÇ´íÎó£¬¸ÄÎªÊ£Óà±¾½ğ¡£
+        if ( data_due_principal > data_period_principal ) // ä¿®æ­£æœ¬æœŸåº”è¿˜æœ¬é‡‘ï¼Œå¦‚æœåº”è¿˜æœ¬é‡‘ï¼Œå¤§äºå‰©ä½™æœ¬é‡‘ï¼Œå°±æ˜¯é”™è¯¯ï¼Œæ”¹ä¸ºå‰©ä½™æœ¬é‡‘ã€‚
         {
             data_due_principal = data_period_principal;
         }
@@ -68,7 +65,7 @@ public class PeriodAmount
     }
     
     public void cal_last_period_due_principal()
-    { // ĞŞÕı×îºóÒ»ÆÚÓ¦»¹±¾½ğ£¬Èç¹ûÃ»»¹Íê±¾½ğ£¬È«²¿¹é»¹¡£
+    { // ä¿®æ­£æœ€åä¸€æœŸåº”è¿˜æœ¬é‡‘ï¼Œå¦‚æœæ²¡è¿˜å®Œæœ¬é‡‘ï¼Œå…¨éƒ¨å½’è¿˜ã€‚
         if ( data_due_principal < data_period_principal )
         {
             data_due_principal = data_period_principal;
@@ -93,22 +90,22 @@ public class PeriodAmount
         
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Calendar newCal = java.util.Calendar.getInstance();
-        newCal.setTime(start_date);//Ê¹ÓÃ¸ø¶¨µÄ Date ÉèÖÃ´Ë Calendar µÄÊ±¼ä¡£ 
+        newCal.setTime(start_date);//ä½¿ç”¨ç»™å®šçš„ Date è®¾ç½®æ­¤ Calendar çš„æ—¶é—´ã€‚ 
         
-        if ( period_days == 0 ) // Èç¹ûÊÇ0£¬ÔòÊÇ°´ÔÂ»¹£¬¼ä¸ôÎªxÔÂ.
+        if ( period_days == 0 ) // å¦‚æœæ˜¯0ï¼Œåˆ™æ˜¯æŒ‰æœˆè¿˜ï¼Œé—´éš”ä¸ºxæœˆ.
         {
-            newCal.add(java.util.Calendar.MONTH, x);// ÈÕÆÚ¼Óx¸öÔÂ
-            period_date = newCal.getTime();//·µ»ØÒ»¸ö±íÊ¾´Ë Calendar Ê±¼äÖµµÄ Date ¶ÔÏó¡£
+            newCal.add(java.util.Calendar.MONTH, x);// æ—¥æœŸåŠ xä¸ªæœˆ
+            period_date = newCal.getTime();//è¿”å›ä¸€ä¸ªè¡¨ç¤ºæ­¤ Calendar æ—¶é—´å€¼çš„ Date å¯¹è±¡ã€‚
             
            // i = new DateInterval("P".$x."M");
         } 
-        else if ( period_days < 0 ) // ĞèÒª²ÉÓÃºóÃæµÄÊµ¼ÊÌìÊıÊı×é
+        else if ( period_days < 0 ) // éœ€è¦é‡‡ç”¨åé¢çš„å®é™…å¤©æ•°æ•°ç»„
         {
             
         } else
         {
-        	newCal.add(java.util.Calendar.DATE, x * period_days);// ÈÕÆÚ¼Óx¸öÌì
-            period_date = newCal.getTime();//·µ»ØÒ»¸ö±íÊ¾´Ë Calendar Ê±¼äÖµµÄ Date ¶ÔÏó¡£
+        	newCal.add(java.util.Calendar.DATE, x * period_days);// æ—¥æœŸåŠ xä¸ªå¤©
+            period_date = newCal.getTime();//è¿”å›ä¸€ä¸ªè¡¨ç¤ºæ­¤ Calendar æ—¶é—´å€¼çš„ Date å¯¹è±¡ã€‚
            // i = new DateInterval("P".$xd."D");
         }
         
@@ -117,18 +114,18 @@ public class PeriodAmount
         
 
     //    echo date_format($date,"Y/m/d")."<br>";
-        data_due_days = (int) ( ( data_period_date.getTime() - data_start_date.getTime() ) / (1000*3600*24) );  //Õâ¸öÃ»ÓÃÁË£¬ºóÃæĞèÒªÖØĞÂ FixDueDays
+        data_due_days = (int) ( ( data_period_date.getTime() - data_start_date.getTime() ) / (1000*3600*24) );  //è¿™ä¸ªæ²¡ç”¨äº†ï¼Œåé¢éœ€è¦é‡æ–° FixDueDays
     }
     
     public Date getPeriodDate()
-    { // »ñÈ¡±¾ÆÚ»¹¿îÈÕµÄÒ»¸ö¸±±¾
+    { // è·å–æœ¬æœŸè¿˜æ¬¾æ—¥çš„ä¸€ä¸ªå‰¯æœ¬
         Date the_date= new Date();
         the_date.setTime(data_period_date.getTime());
         return the_date;
     }
     
     public void fixDueDays(Date the_date)
-    { // ¼ÆËã±¾ÆÚ»¹¿îÈÕºÍÄ³ÈÕÆÚ£¨ÉÏÆÚ»¹¿îÈÕ£©¼ä¸ôµÄÌìÊı
+    { // è®¡ç®—æœ¬æœŸè¿˜æ¬¾æ—¥å’ŒæŸæ—¥æœŸï¼ˆä¸ŠæœŸè¿˜æ¬¾æ—¥ï¼‰é—´éš”çš„å¤©æ•°
     	double datediff =  ( data_period_date.getTime() - the_date.getTime() );
     	datediff = datediff / (1000*3600*24);
     	datediff = wjutil.Tools.round(datediff, 0);
