@@ -8,7 +8,7 @@ public class MyTest {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("======³ÌĞò¿ªÊ¼=====");
+		System.out.println("======ç¨‹åºå¼€å§‹=====");
 		ConnectionFactory cf =ConnectionFactory.getInstance();
 		Connection conn = cf.makeConnection();
 		System.out.println(conn.getAutoCommit());
