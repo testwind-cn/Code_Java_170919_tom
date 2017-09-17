@@ -38,7 +38,7 @@ public class CheckServlet extends HttpServlet {
 	
 		
 		if (uname == null || passwd == null){
-			req.setAttribute("msg", "�û���Ϊ��");
+			req.setAttribute("msg", "用户名为空");
 			forward = "/14/success.jsp";
 	
 		}else{
@@ -48,7 +48,7 @@ public class CheckServlet extends HttpServlet {
 			 if ( cku.check(user) ) {
 				 forward = "/14/success.jsp";
 			 } else {
-				 req.setAttribute("msg", "�û����������");
+				 req.setAttribute("msg", "用户名密码错误");
 				 forward = "/14/error.jsp";
 			 }
 			 
@@ -74,6 +74,7 @@ public class CheckServlet extends HttpServlet {
 				rs = st.executeQuery(sql);
 				aa = "ok";
 				while ( rs.next() ){
+					aa = aa.concat(rs.getString("name")).concat(rs.getString("passwd"));
 					aa = aa.concat(" ");
 					aa = aa.concat(rs.getString("name"));
 					aa = aa.concat(" ");
@@ -85,6 +86,8 @@ public class CheckServlet extends HttpServlet {
 			}finally {
 				
 			}
+			
+			resp.getWriter().append("Served at: ").append(req.getContextPath()).append(aa);
 		} else
 		{
 			aa = "No Link";
