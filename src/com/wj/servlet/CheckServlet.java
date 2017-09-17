@@ -38,7 +38,7 @@ public class CheckServlet extends HttpServlet {
 	
 		
 		if (uname == null || passwd == null){
-			req.setAttribute("msg", "ÓÃ»§ÃûÎª¿Õ");
+			req.setAttribute("msg", "ï¿½Ã»ï¿½ï¿½ï¿½Îªï¿½ï¿½");
 			forward = "/14/success.jsp";
 	
 		}else{
@@ -48,7 +48,7 @@ public class CheckServlet extends HttpServlet {
 			 if ( cku.check(user) ) {
 				 forward = "/14/success.jsp";
 			 } else {
-				 req.setAttribute("msg", "ÓÃ»§ÃûÃÜÂë´íÎó");
+				 req.setAttribute("msg", "ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 				 forward = "/14/error.jsp";
 			 }
 			 
@@ -67,12 +67,17 @@ public class CheckServlet extends HttpServlet {
 		
 		String aa;
 
+		if ( conn != null ) 
+		{
 			try {
 				st = conn.createStatement();
 				rs = st.executeQuery(sql);
 				aa = "ok";
 				while ( rs.next() ){
-					aa = aa.concat(rs.getString("name")).concat(rs.getString("passwd"));
+					aa = aa.concat(" ");
+					aa = aa.concat(rs.getString("name"));
+					aa = aa.concat(" ");
+					aa = aa.concat(rs.getString("passwd"));
 				}
 				
 			}catch(Exception e){
@@ -80,8 +85,12 @@ public class CheckServlet extends HttpServlet {
 			}finally {
 				
 			}
-			
-			resp.getWriter().append("Served at: ").append(req.getContextPath()).append(aa);
+		} else
+		{
+			aa = "No Link";
+		}
+		
+		resp.getWriter().append("Served at: ").append(req.getContextPath()).append("  ").append(aa);
 	}
 
 

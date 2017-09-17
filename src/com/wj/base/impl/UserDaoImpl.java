@@ -11,7 +11,7 @@ import com.wj.base.entity.User;;
 public class UserDaoImpl implements UserDao {
 
 	/**
-	 * 保存信息
+	 * 淇濆瓨淇℃伅
 	 */
 	@Override
 	public void save(Connection conn,User user) throws SQLException{
@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	/**
-	 * 更新信息
+	 * 鏇存柊淇℃伅
 	 */
 	@Override
 	public void update(Connection conn,User user) throws SQLException {
@@ -54,7 +54,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	/**
-	 * 删除信息
+	 * 鍒犻櫎淇℃伅
 	 */
 	@Override
 	public void delete(Connection conn,User user) throws SQLException {
@@ -73,7 +73,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	/**
-	 * 获取记录
+	 * 鑾峰彇璁板綍
 	 */
 	@Override
 	public ResultSet get(Connection conn,User user) throws SQLException {
