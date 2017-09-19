@@ -3,7 +3,7 @@
 
   <servlet>
     <servlet-name>GoodPage</servlet-name>
-    <servlet-class>com.wj.db.test.servlet.GoodPage</servlet-class>
+    <servlet-class>com.wj.db._test.servlet.GoodPage</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>GoodPage</servlet-name>
@@ -12,7 +12,7 @@
 
   <servlet>
     <servlet-name>CheckServlet</servlet-name>
-    <servlet-class>com.wj.db.test.servlet.CheckServlet</servlet-class>
+    <servlet-class>com.wj.db._test.servlet.CheckServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>CheckServlet</servlet-name>
