@@ -27,6 +27,7 @@ public class ConnectionFactory {
 		Properties prop = new Properties();
 		try {
 			InputStream in = ConnectionFactory.class.getClassLoader().getResourceAsStream("dbconfig.properties");
+			//http://riddickbryant.iteye.com/blog/436693
 			prop.load(in);
 		}catch(Exception e){
 			
@@ -79,7 +80,7 @@ public class ConnectionFactory {
 				needRelink = true;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			// e1.printStackTrace();
+			e1.printStackTrace();
 			needRelink = true;
 		}
 		
@@ -118,7 +119,7 @@ public class ConnectionFactory {
 				needClose = true;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			// e1.printStackTrace();
+			e1.printStackTrace();
 			needClose = false;
 		}
 		if ( needClose && conn != null )

@@ -1,8 +1,10 @@
 package com.wj.db._test;
 
+
 import java.net.InetAddress;
 import java.sql.Connection;
 
+import com.wj.db.dao.service.TokenService;
 import com.wj.db.dao.util.ConnectionFactory;
 
 
@@ -22,7 +24,16 @@ public class MyTest {
 		String addr = InetAddress.getLocalHost().getHostName();//获得本机IP  
 		String name = InetAddress.getLocalHost().getHostAddress();
 		System.out.println( name+"  "+addr);
+		
+		
+		
+		// System.out.println( getTokenStr("wx66dded684c14bfd1","e5f1a2b154a810183f1e3032eb289c98") );
+		
+		TokenService sss = new TokenService();
+		System.out.println(sss.RefreshToken());
 
 	}
+	
+	 
 
 }

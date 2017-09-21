@@ -44,9 +44,9 @@ public class WechatServlet extends HttpServlet {
         InputStream inStr = request.getInputStream();  
         InputStreamReader inStrRd = new InputStreamReader(inStr, "UTF-8");  
         BufferedReader bufRd = new BufferedReader(inStrRd);  
-        String str = "";  
+        String str = "";
         while ((str = bufRd.readLine()) != null) {  
-            strBuf.append(str);  
+            strBuf.append(str);
         }  
         String xml = strBuf.toString(); //次即为接收到微信端发送过来的xml数据  
 
@@ -54,7 +54,9 @@ public class WechatServlet extends HttpServlet {
     		xml="<xml> <ToUserName>aaa</ToUserName> <FromUserName>aaa</FromUserName>  <CreateTime>1348831860</CreateTime> <MsgType>text</MsgType> <Content>天气怎样</Content> <MsgId>1234567890123456</MsgId> </xml>";
      // xml="<text>今天上海天气怎样"; //
 
-        String result = "";  
+        String result = ""; 
+        
+        
         /** 判断是否是微信接入激活验证，只有首次接入验证时才会收到echostr参数，此时需要把它直接返回 */  
         String echostr = request.getParameter("echostr");  
         if (echostr != null && echostr.length() > 1) {  

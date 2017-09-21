@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * 什么都没有，就一个空 JSP，打印 Hello world
+ * 什么都没有，就一个空 servlet，打印 Hello world
  */
 
 /**
- * Servlet implementation class Hello
+ * Servlet implementation class Hello@WebServlet("/Hello1")
  */
-@WebServlet("/Hello")
+
 public class Hello extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp)

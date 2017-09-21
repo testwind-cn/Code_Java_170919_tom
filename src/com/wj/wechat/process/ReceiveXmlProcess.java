@@ -32,12 +32,11 @@ public class ReceiveXmlProcess {
             // 遍历根节点下所有子节点  
             Iterator<?> iter = root.elementIterator();  
               
-            // 遍历所有结点  
-            msg = new ReceiveXmlEntity();  
+            //遍历所有结点  
             //利用反射机制，调用set方法  
             //获取该实体的元类型  
-            Class<?> c = Class.forName("demo.entity.ReceiveXmlEntity");  
-            msg = (ReceiveXmlEntity)c.newInstance();//创建这个实体的对象  
+            Class<?> c = Class.forName("com.wj.wechat.entity.ReceiveXmlEntity");  
+            msg = (ReceiveXmlEntity)c.newInstance();//创建这个实体的对象
               
             while(iter.hasNext()){  
                 Element ele = (Element)iter.next();  
@@ -47,7 +46,12 @@ public class ReceiveXmlProcess {
                 Method method = c.getDeclaredMethod("set"+ele.getName(), field.getType());  
                 //调用set方法  
                 method.invoke(msg, ele.getText());  
-            }  
+            } 
+ 
+            
+//            msg = (ReceiveXmlEntity) new ReceiveXmlEntity();
+            
+            
         } catch (Exception e) {  
             // TODO: handle exception  
             System.out.println("xml 格式异常: "+ strXml);  

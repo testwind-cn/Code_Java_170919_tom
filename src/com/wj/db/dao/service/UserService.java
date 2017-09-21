@@ -2,18 +2,23 @@ package com.wj.db.dao.service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.wj.db.dao.entity.User;
 import com.wj.db.dao.impl.UserDaoImpl;
-import com.wj.db.dao.inface.UserDaoInface;
+import com.wj.db.dao.intface.DaoIntface;
 import com.wj.db.dao.util.ConnectionFactory;
 
 public class UserService {
 
-	private UserDaoInface userDao = new UserDaoImpl();
+	private DaoIntface userDao;
+	
 	
 	public boolean check(User user){
 		Connection conn = null;
+		
+		userDao = new UserDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class); //传入dao接口的完整类名，由dao工厂根据接口名创建出dao的实现类daoimpl  
+	    
 		try {
 			conn = ConnectionFactory.getInstance().makeConnection();
 			conn.setAutoCommit(false);
@@ -44,11 +49,14 @@ public class UserService {
 	
 	public boolean save(User user){
 		Connection conn = null;
+		
+		userDao = new UserDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class);
+		
 		try {
 			conn = ConnectionFactory.getInstance().makeConnection();
 			conn.setAutoCommit(false);
 
-			UserDaoInface userDao = new UserDaoImpl();
+						
 			userDao.save(conn, user);
 			conn.commit();
 
@@ -70,5 +78,26 @@ public class UserService {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList enumdata(String where) {
+		where = "1";
+		
+		Connection conn = null;
+		userDao = new UserDaoImpl();
+		
+		try {
+			conn = ConnectionFactory.getInstance().makeConnection();
+			return userDao.get_where(conn, where);
+		} catch (Exception e){
+			e.printStackTrace();
+
+			
+		} finally {
+
+		}
+		
+
+		return null;
 	}
 }

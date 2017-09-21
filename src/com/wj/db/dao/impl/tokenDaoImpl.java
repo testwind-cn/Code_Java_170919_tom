@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.wj.db.dao.entity.Access_token;
 import com.wj.db.dao.entity.User;
 import com.wj.db.dao.intface.DaoIntface;
 
-public class UserDaoImpl implements DaoIntface {
+public class tokenDaoImpl implements DaoIntface {
 
 	/**
 	 * 保存信息
@@ -17,14 +19,15 @@ public class UserDaoImpl implements DaoIntface {
 	@Override
 	public void save(Connection conn,Object obj) throws SQLException{
 		// TODO Auto-generated method stub
-		User user = (User ) obj;
-		String SQLstr = "INSERT INTO the_user(name,passwd,email) values (?,?,?)";
+		Access_token access_token = (Access_token ) obj;
+		String SQLstr = "INSERT INTO access_token(access_token,start_time) values (?,?)";
 		PreparedStatement ps;
 		try {
+			
 			ps = conn.prepareStatement(SQLstr);
-			ps.setString(1, user.getName());
-			ps.setString(2, user.getPassword());
-			ps.setString(3, user.getEmail());
+			ps.setString(1, access_token.getAccess_token());
+			ps.setTimestamp(2, access_token.getStart_time());
+
 			ps.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -83,7 +86,7 @@ public class UserDaoImpl implements DaoIntface {
 	public ResultSet get(Connection conn,Object obj) throws SQLException {
 		// TODO Auto-generated method stub
 		User user = (User ) obj;
-		String SQLstr = "SELECT * FROM the_user WHERE name=? AND passwd=?";
+		String SQLstr = "SELECT * FROM access_token WHERE name=? AND passwd=?";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(SQLstr);
@@ -103,9 +106,9 @@ public class UserDaoImpl implements DaoIntface {
 	@Override
 	public ArrayList get_where(Connection conn, String where) throws SQLException {
 		// TODO Auto-generated method stub
-		ArrayList list = new ArrayList();
+		ArrayList<Access_token> list = new ArrayList<Access_token>();
 		
-		String SQLstr = "SELECT * FROM the_user WHERE " + where;
+		String SQLstr = "SELECT access_token,start_time FROM access_token order by start_time desc ";
 		PreparedStatement ps;
 		ResultSet rs;
 		
@@ -122,16 +125,16 @@ public class UserDaoImpl implements DaoIntface {
 		{
 			while (rs.next())
 			{
-				User a_user = new User();
-				a_user.setName((String) rs.getObject("name"));
-				a_user.setId( ( (Integer) rs.getObject("id")).longValue() );
-				a_user.setEmail((String) rs.getObject("email"));
-				a_user.setPassword((String) rs.getObject("passwd"));
-				list.add(a_user);
+				Access_token a_token = new Access_token();
+				a_token.setAccess_token( (String) rs.getObject("access_token") );
+				a_token.setStart_time( rs.getTimestamp("start_time") );
+				list.add( a_token);
+				// 取第一个就立刻return ，否则不return
+				return list;
 			}
 		}
 		
-		return list;
+		return  list;
 	}
 
 }

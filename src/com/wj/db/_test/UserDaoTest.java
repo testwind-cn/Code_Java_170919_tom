@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 import com.wj.db.dao.entity.User;
 import com.wj.db.dao.impl.UserDaoImpl;
-import com.wj.db.dao.inface.UserDaoInface;
+import com.wj.db.dao.intface.DaoIntface;
 import com.wj.db.dao.service.UserService;
 import com.wj.db.dao.util.ConnectionFactory;
 
@@ -23,7 +23,7 @@ public class UserDaoTest {
 		tom.setPassword("1234");
 		tom.setEmail("eee@sina.com");
 		
-		serv.save(tom);
+		serv.enumdata("1");
 	}
 
 }

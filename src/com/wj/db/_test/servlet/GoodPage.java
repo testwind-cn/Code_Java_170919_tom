@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 什么都没有，就一个空 JSP，打印和跳转
+ * 什么都没有，就一个空 servlet，打印和跳转
  */
 
 public class GoodPage extends HttpServlet {
