@@ -3,7 +3,9 @@ package com.wj.db._test;
 
 import java.net.InetAddress;
 import java.sql.Connection;
+import java.sql.Timestamp;
 
+import com.wj.db.dao.service.TicketService;
 import com.wj.db.dao.service.TokenService;
 import com.wj.db.dao.util.ConnectionFactory;
 
@@ -28,9 +30,14 @@ public class MyTest {
 		
 		
 		// System.out.println( getTokenStr("wx66dded684c14bfd1","e5f1a2b154a810183f1e3032eb289c98") );
+//		Timestamp a = new Timestamp(1506310152570L);
 		
-		TokenService sss = new TokenService();
-		System.out.println(sss.RefreshToken());
+//		System.out.println( a );
+//		TokenService sss = new TokenService();
+//		System.out.println(sss.RefreshToken());
+		
+		TicketService sss = new TicketService();
+		System.out.println(sss.RefreshTicket());
 
 	}
 	

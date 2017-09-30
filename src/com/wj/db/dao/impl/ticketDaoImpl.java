@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import com.wj.db.dao.entity.Access_token;
+import com.wj.db.dao.entity.Jsapi_ticket;
 import com.wj.db.dao.entity.User;
 import com.wj.db.dao.intface.DaoIntface;
 
-public class tokenDaoImpl implements DaoIntface {
+public class ticketDaoImpl implements DaoIntface {
 
 	/**
 	 * 保存信息
@@ -19,15 +19,15 @@ public class tokenDaoImpl implements DaoIntface {
 	@Override
 	public void save(Connection conn,Object obj) throws SQLException{
 		// TODO Auto-generated method stub
-		Access_token access_token = (Access_token ) obj;
-		String SQLstr = "INSERT INTO access_token(token,start_time,end_time) values (?,?,?)";
+		Jsapi_ticket jsapi_ticket = (Jsapi_ticket ) obj;
+		String SQLstr = "INSERT INTO jsapi_ticket(ticket,start_time,end_time) values (?,?,?)";
 		PreparedStatement ps;
 		try {
 			
 			ps = conn.prepareStatement(SQLstr);
-			ps.setString(1, access_token.getToken());
-			ps.setTimestamp(2, access_token.getStart_time());
-			ps.setTimestamp(3, access_token.getEnd_time());
+			ps.setString(1, jsapi_ticket.getTicket());
+			ps.setTimestamp(2, jsapi_ticket.getStart_time());
+			ps.setTimestamp(3, jsapi_ticket.getEnd_time());
 
 			ps.execute();
 		} catch (SQLException e) {
@@ -87,7 +87,7 @@ public class tokenDaoImpl implements DaoIntface {
 	public ResultSet get(Connection conn,Object obj) throws SQLException {
 		// TODO Auto-generated method stub
 		User user = (User ) obj;
-		String SQLstr = "SELECT * FROM access_token WHERE name=? AND passwd=?";
+		String SQLstr = "SELECT * FROM jsapi_ticket WHERE name=? AND passwd=?";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(SQLstr);
@@ -107,9 +107,9 @@ public class tokenDaoImpl implements DaoIntface {
 	@Override
 	public ArrayList get_where(Connection conn, String where) throws SQLException {
 		// TODO Auto-generated method stub
-		ArrayList<Access_token> list = new ArrayList<Access_token>();
+		ArrayList<Jsapi_ticket> list = new ArrayList<Jsapi_ticket>();
 		
-		String SQLstr = "SELECT token,start_time,end_time FROM access_token order by start_time desc ";
+		String SQLstr = "SELECT ticket,start_time,end_time FROM jsapi_ticket order by start_time desc ";
 		PreparedStatement ps;
 		ResultSet rs;
 		
@@ -126,11 +126,11 @@ public class tokenDaoImpl implements DaoIntface {
 		{
 			while (rs.next())
 			{
-				Access_token a_token = new Access_token();
-				a_token.setToken( (String) rs.getObject("token") );
-				a_token.setStart_time( rs.getTimestamp("start_time") );
-				a_token.setEnd_time( rs.getTimestamp("end_time") );
-				list.add( a_token);
+				Jsapi_ticket a_ticket = new Jsapi_ticket();
+				a_ticket.setTicket( (String) rs.getObject("ticket") );
+				a_ticket.setStart_time( rs.getTimestamp("start_time") );
+				a_ticket.setEnd_time( rs.getTimestamp("end_time") );
+				list.add( a_ticket);
 				// 取第一个就立刻return ，否则不return
 				return list;
 			}

@@ -14,12 +14,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.wj.db.dao.entity.Access_token;
-import com.wj.db.dao.impl.tokenDaoImpl;
+import com.wj.db.dao.entity.Jsapi_ticket;
+import com.wj.db.dao.impl.ticketDaoImpl;
 import com.wj.db.dao.intface.DaoIntface;
 import com.wj.db.dao.util.ConnectionFactory;
 
-public class TokenService {
+public class TicketService {
 
 	private DaoIntface userDao;
 	
@@ -30,14 +30,14 @@ public class TokenService {
     /**
      * 
      */
-    public TokenService() {
+    public TicketService() {
         super();
         // TODO Auto-generated constructor stub
         appid = "wx66dded684c14bfd1";
         secret = "e5f1a2b154a810183f1e3032eb289c98";
     }
     
-    public TokenService(String appid,String secret) {
+    public TicketService(String appid,String secret) {
         super();
         // TODO Auto-generated constructor stub
         this.appid = appid;
@@ -50,10 +50,16 @@ public class TokenService {
      * 
      * @throws IOException 
      */ 
-    private String getTokenStr(String appid,String secret ) { 
+    private String getTicketStr(String appid,String secret ) { 
             URL url;
+            TokenService sss = new TokenService( appid, secret );
+    		String accessToken = sss.RefreshToken();
+    		
 			try {
-				url = new URL("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+secret);
+				url = new URL("https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token="+ accessToken );
+				// 如果是企业号用以下 URL 获取 ticket
+                // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
+                // $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -90,36 +96,66 @@ public class TokenService {
 				e.printStackTrace();
 			}
             return "";
+            
+            
+            
+            /*    
+            private String getJsApiTicket() {
+                // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
+                $data = json_decode(file_get_contents("jsapi_ticket.json"));
+                if ($data->expire_time < time()) {
+                  $accessToken = $this->getAccessToken();
+                  // 如果是企业号用以下 URL 获取 ticket
+                  // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
+                  $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
+                  $res = json_decode($this->httpGet($url));
+                  $ticket = $res->ticket;
+                  if ($ticket) {
+                    $data->expire_time = time() + 7000;
+                    $data->jsapi_ticket = $ticket;
+                    $fp = fopen("jsapi_ticket.json", "w");
+                    fwrite($fp, json_encode($data));
+                    fclose($fp);
+                  }
+                } else {
+                  $ticket = $data->jsapi_ticket;
+                }
+
+                return $ticket;
+              }
+        */
+            
+            
     }
     
-    private String getTokenStr()
+    private String getTicketStr()
     {
-    	return getTokenStr( appid, secret );
+    	return getTicketStr( appid, secret );
     }
     
     
-    public String RefreshToken(boolean force) { // true = 强制刷新
+    public String RefreshTicket(boolean force) { // true = 强制刷新
     	
 		if ( force == false )
 		{
-			String s = getCurrentToken();
+			String s = getCurrentTicket();
 			if  ( s !=null && s.length() > 0  )
 				return s;
 		}
-		return GenAndSaveToken();
+		return GenAndSaveTicket();
     }
     
-    public String RefreshToken() {
-    	return RefreshToken(false);
+    public String RefreshTicket() {
+    	return RefreshTicket(false);
     }
     
-    private String getCurrentToken(){
+    private String getCurrentTicket(){
     	
-    	Access_token access_token;
+    	Jsapi_ticket jsapi_ticket;
     	
     	Connection conn = null;
     	ArrayList alist =null;
-    	userDao = new tokenDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class);
+    	userDao = new ticketDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class);
 		
 		try {
 			conn = ConnectionFactory.getInstance().makeConnection();
@@ -136,18 +172,18 @@ public class TokenService {
 		if ( alist !=null && alist.size() > 0  )
 		{
 			System.out.println( alist.get(0).getClass() );
-			System.out.println( Access_token.class );
+			System.out.println( Jsapi_ticket.class );
 			
-			if ( Access_token.class.isInstance( alist.get(0) ) )
+			if ( Jsapi_ticket.class.isInstance( alist.get(0) ) )
 			{
 				java.util.Date date=new java.util.Date();
 				
-				access_token = ( Access_token ) alist.get(0);
+				jsapi_ticket = ( Jsapi_ticket ) alist.get(0);
 //				long diff = date.getTime() - access_token.getStart_time().getTime();
-//				if (  diff < 60*1000*110 ) //110 分钟刷新一次
-				if ( access_token.getEnd_time() != null )
-					if ( date.getTime() + 60000 < access_token.getEnd_time().getTime() ) // 至少要早于截止时间1分钟
-						return access_token.getToken();
+//				if (  diff < 60*1000*90 ) // 90 分钟刷新一次
+				if ( jsapi_ticket.getEnd_time() != null )
+					if ( date.getTime() + 60000 < jsapi_ticket.getEnd_time().getTime() ) // 至少要早于截止时间1分钟
+						return jsapi_ticket.getTicket();
 			}
 		}
     	return null;
@@ -162,7 +198,7 @@ public class TokenService {
 			json = new JSONObject(jsonString);
 			JSONArray jsonArray=json.getJSONArray("data"); 
 	        JSONObject data=(JSONObject) jsonArray.get(0);
-	        token =(String) data.get("access_token");
+	        token =(String) data.get("ticket");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -186,11 +222,11 @@ public class TokenService {
     }  
     
     
-    private String GenAndSaveToken(){
+    private String GenAndSaveTicket(){
     	String s;
-    	Access_token access_token = new Access_token();
+    	Jsapi_ticket jsapi_ticket = new Jsapi_ticket();
     	
-    	s = getTokenStr();	  
+    	s = getTicketStr();	  
     	
     	if  ( s == null ||  s.length() <= 0  )
     		return s;
@@ -204,23 +240,23 @@ public class TokenService {
     	java.util.Date date=new java.util.Date();
     	Timestamp end_time = new Timestamp(date.getTime() + 60*1000*110 ); // 110分钟		
     	
-    	access_token.setToken(s);
-    	access_token.setStart_time(null);
-    	access_token.setEnd_time(end_time);
-    	save(access_token);
+    	jsapi_ticket.setTicket(s);
+    	jsapi_ticket.setStart_time(null);
+    	jsapi_ticket.setEnd_time(end_time);
+    	save(jsapi_ticket);
 
     	return s;
     }
 	
-    private boolean save(Access_token access_token){
+    private boolean save(Jsapi_ticket jsapi_ticket){
 		Connection conn = null;
 
-		userDao = new tokenDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class);
+		userDao = new ticketDaoImpl(); // = DaoFactory.getInstance().createDao(UserDaoImpl.class);
 		
 		try {
 			conn = ConnectionFactory.getInstance().makeConnection();
 			conn.setAutoCommit(false);
-			userDao.save(conn, access_token);
+			userDao.save(conn, jsapi_ticket);
 			conn.commit();
 		} catch (Exception e){
 			e.printStackTrace();

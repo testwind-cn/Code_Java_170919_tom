@@ -2,17 +2,17 @@ package com.wj.db.dao.entity;
 
 import java.sql.Timestamp;
 
-public class Access_token extends IdEntity {
+public class Jsapi_ticket extends IdEntity {
 
-	private String token;
+	private String ticket;
 	private Timestamp start_time,end_time;
 
-	public String getToken() {
-		return token;
+	public String getTicket() {
+		return ticket;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
 	}
 
 	public Timestamp getStart_time() {
@@ -44,7 +44,7 @@ public class Access_token extends IdEntity {
 
 	@Override
 	public String toString() {
-		return "access_token [token=" + token + ", start_time=" + start_time + ", end_time=" + end_time + ", id=" + id + "]";
+		return "jsapi_ticket [ticket=" + ticket + ", start_time=" + start_time + ", end_time=" + end_time + ", id=" + id + "]";
 	}
 
 }
