@@ -101,6 +101,13 @@ public class PeriodAmount
         } 
         else if ( period_days < 0 ) // 需要采用后面的实际天数数组
         {
+        	int sumDays = 0;
+        	int t_period_days_array[] = (int[]) period_days_array;
+        	for ( int i=0; i<x; i++ ) {
+        		sumDays += t_period_days_array[i];        		
+        	}
+        	newCal.add(java.util.Calendar.DATE, sumDays);// 日期加sumDays个天
+        	period_date = newCal.getTime();//返回一个表示此 Calendar 时间值的 Date 对象。
             
         } else
         {
