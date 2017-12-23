@@ -12,7 +12,23 @@
 OK 第一个程序
 <%  TotalScedule s=new TotalScedule(); 
 
-s.calPeriodAmount(12000, 0.18, 24, 0);
+// s.calPeriodAmount(10000, 0.18, 6, 0);
+
+// s.calPeriodAmount(10000, 0.18, 6, 0);
+
+// calPeriodAmount( double all_loan ,double real_rate, int total_Period, int period_days, String start_date, int t_period_days_array[])
+
+
+//int t_period_days_array[] = { 25,31,28,31,30,31};
+//s.calPeriodAmount( 10000 ,0.213, 6, -1, "2017-12-16", t_period_days_array);
+
+
+
+int t_period_days_array[] = { 22,31,28,31,30,31};
+//s.calPeriodAmount( 10000 ,0.213, 6, -1, "2017-12-16", t_period_days_array);
+s.calPeriodAmount( 10000 ,0.2197, 6, -1, "2017-12-16", t_period_days_array);
+
+
 String ss = s.echoTable();
 out.println(ss);
 
