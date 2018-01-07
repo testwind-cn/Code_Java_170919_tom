@@ -15,6 +15,7 @@ public class TotalScedule
 {
     private double d1_all_loan = 12000;
     private double d2_real_rate = 0.18;
+    private double d2_real_day_rate = 0.0005;
     private int d3_total_Period = 36;
     private int d4_period_days = 0;  // 0=按自然月还， 1-365=按天数周期还，-1=按后面的还款天表
     private double d6_period_amount = 0.0;
@@ -83,6 +84,7 @@ public class TotalScedule
         
         d1_all_loan = all_loan;
         d2_real_rate = real_rate;
+        d2_real_day_rate = d2_real_rate / 360.0;
         d3_total_Period = total_Period; // 不能小于1
         d4_period_days = period_days; // 0=按自然月还， 1-365=按天数周期还，-1=按后面的还款天表
         period_days_array = t_period_days_array;
@@ -111,7 +113,7 @@ public class TotalScedule
             periodAmounts[x] = new PeriodAmount();
             periodAmounts[x].setPeriodDate(d5_start_date, x, d4_period_days, period_days_array);       // 赋值借款日和本期还款日、本期期数
             periodAmounts[x].fixDueDays(periodAmounts[x-1].getPeriodDate()); // 修正本期天数
-            periodAmounts[x].fix_z_1_B(d2_real_rate);
+            periodAmounts[x].fix_z_1_B(d2_real_day_rate);
         }
         
         periodAmounts[d3_total_Period+1] = new PeriodAmount(); // 多生成一个，data_due_z_1_B = 1；
@@ -125,6 +127,7 @@ public class TotalScedule
             sum_z_pai = sum_z_pai + mult_pai; // 从 2 到 第 25 个 z_pai 求和
         }
         
+                
         double first_z_pai = this.periodAmounts[1].get_z_pai(); //  第1 个 z_pai
         d6_period_amount = d1_all_loan * first_z_pai / sum_z_pai; // 求精确月供
 //        d6_period_amount_round = round( d6_period_amount, 2, PHP_ROUND_HALF_UP ); // 求四舍五入到分月供
@@ -132,12 +135,12 @@ public class TotalScedule
        // JAVA BEGIN
         //BigDecimal bg = new BigDecimal(d6_period_amount);
         //d6_period_amount_round = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        d6_period_amount_round = com.wj.fin.wjutil.Tools.round(d6_period_amount,2);
+        d6_period_amount_round = com.wj.fin.wjutil.Tools.round_up(d6_period_amount,2);
         // Java END
         
         
         for (int x=1; x <= this.d3_total_Period; x++) {
-            periodAmounts[x].cal_principal_interest(periodAmounts[x-1].getNextPeriodPrincipal(),d2_real_rate,d6_period_amount_round);
+            periodAmounts[x].cal_principal_interest(periodAmounts[x-1].getNextPeriodPrincipal(),d2_real_day_rate,d6_period_amount_round);
         }
         
         periodAmounts[d3_total_Period].cal_last_period_due_principal();

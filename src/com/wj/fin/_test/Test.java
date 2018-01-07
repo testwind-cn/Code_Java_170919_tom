@@ -3,6 +3,8 @@
  */
 package com.wj.fin._test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +30,7 @@ public class Test {
 		
 		
 		double datediff =  27.9833;
-    	datediff = com.wj.fin.wjutil.Tools.round(datediff, 0);
+    	datediff = com.wj.fin.wjutil.Tools.round_half_up(datediff, 0);
     	System.out.println(datediff);
     	System.out.println((int) datediff);
     	
@@ -50,6 +52,8 @@ public class Test {
 		  }
 
 		
+
+		    
 	}
 
 }

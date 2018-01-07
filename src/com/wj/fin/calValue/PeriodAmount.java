@@ -40,10 +40,10 @@ public class PeriodAmount
         return data_period_principal - data_due_principal;
     }
     
-    public void cal_principal_interest(double new_principal, double rate, double per_amount_round)
+    public void cal_principal_interest(double new_principal, double real_day_rate, double per_amount_round)
     { // 计算本期应还本金、利息、剩余本金。
-    	data_period_principal = com.wj.fin.wjutil.Tools.round(new_principal,4);     // 本期总欠本金// 每期剩余本金不可能为长小数，把末尾小数去除
-        data_due_interest_real = data_period_principal * data_due_days * rate / 360.0;  // 本期精确应还利息取整
+    	data_period_principal = com.wj.fin.wjutil.Tools.round_half_up(new_principal,4);     // 本期总欠本金// 每期剩余本金不可能为长小数，把末尾小数去除
+        data_due_interest_real = data_period_principal * data_due_days * real_day_rate ;  // 本期精确应还利息取整 / 360.0
 
         // PHP BEGIN
         // double new_interest_round = round( new_interest, 2, PHP_ROUND_HALF_UP );     // 本期应还利息取整
@@ -54,14 +54,18 @@ public class PeriodAmount
         //double new_interest_round = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         // Java END
         
-        data_due_interest = com.wj.fin.wjutil.Tools.round(data_due_interest_real,2);  // 本期应还利息取整
-        data_due_principal = com.wj.fin.wjutil.Tools.round( per_amount_round - data_due_interest,2 );
+        data_due_interest = com.wj.fin.wjutil.Tools.round_half_up(data_due_interest_real,2);  // 本期应还利息取整
+        
+        if ( data_due_interest < per_amount_round )
+        	data_due_principal = com.wj.fin.wjutil.Tools.round_half_up( per_amount_round - data_due_interest,2 );
+        else
+        	data_due_principal = 0;
         
         if ( data_due_principal > data_period_principal ) // 修正本期应还本金，如果应还本金，大于剩余本金，就是错误，改为剩余本金。
         {
             data_due_principal = data_period_principal;
         }
-        data_due_amount = com.wj.fin.wjutil.Tools.round( data_due_principal + data_due_interest, 2);
+        data_due_amount = com.wj.fin.wjutil.Tools.round_half_up( data_due_principal + data_due_interest, 2);
     }
     
     public void cal_last_period_due_principal()
@@ -71,7 +75,7 @@ public class PeriodAmount
             data_due_principal = data_period_principal;
         }
 
-        data_due_amount = com.wj.fin.wjutil.Tools.round(data_due_principal + data_due_interest,2);
+        data_due_amount = com.wj.fin.wjutil.Tools.round_half_up(data_due_principal + data_due_interest,2);
     }
     
     public void setPeriodDate(Date start_date, int x)
@@ -103,6 +107,7 @@ public class PeriodAmount
         {
         	int sumDays = 0;
         	int t_period_days_array[] = (int[]) period_days_array;
+        	if ( t_period_days_array != null )
         	for ( int i=0; i<x; i++ ) {
         		sumDays += t_period_days_array[i];        		
         	}
@@ -135,13 +140,13 @@ public class PeriodAmount
     { // 计算本期还款日和某日期（上期还款日）间隔的天数
     	double datediff =  ( data_period_date.getTime() - the_date.getTime() );
     	datediff = datediff / (1000*3600*24);
-    	datediff = com.wj.fin.wjutil.Tools.round(datediff, 0);
+    	datediff = com.wj.fin.wjutil.Tools.round_half_up(datediff, 0);
     	data_due_days = (int) datediff;
     }
     
-    public void fix_z_1_B(double real_rate)
+    public void fix_z_1_B(double real_day_rate)
     {
-    	data_z_1_B = 1 + data_due_days * real_rate / 360.0;
+    	data_z_1_B = 1 + data_due_days * real_day_rate; // real_rate / 360.0;
     }
     
     public double get_z_pai()

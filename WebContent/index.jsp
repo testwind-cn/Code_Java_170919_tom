@@ -19,14 +19,15 @@ OK 第一个程序
 // calPeriodAmount( double all_loan ,double real_rate, int total_Period, int period_days, String start_date, int t_period_days_array[])
 
 
-//int t_period_days_array[] = { 25,31,28,31,30,31};
+int t_period_days_array[] = { 25,31,28,31,30,31};
 //s.calPeriodAmount( 10000 ,0.213, 6, -1, "2017-12-16", t_period_days_array);
+s.calPeriodAmount( 10000 ,0.213, 120, 0, "2017-12-16", null);
 
 
 
-int t_period_days_array[] = { 22,31,28,31,30,31};
-//s.calPeriodAmount( 10000 ,0.213, 6, -1, "2017-12-16", t_period_days_array);
-s.calPeriodAmount( 10000 ,0.2197, 6, -1, "2017-12-16", t_period_days_array);
+//int t_period_days_array[] = { 22,31,28,31,30,31};
+//s.calPeriodAmount( 100000 ,0.5, 120, 0, "2017-12-16", null );//t_period_days_array);
+//s.calPeriodAmount( 10000 ,0.2197, 6, -1, "2017-12-16", t_period_days_array);
 
 
 String ss = s.echoTable();
