@@ -163,7 +163,7 @@ public class PeriodAmount
         //echo date_default_timezone_get();
     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
     	
-    	String s =
+    	String echoStr =
         "        <td>"+data_period_num+"</td>\n"+
         "        <td>"+fmt.format(data_start_date)+"</td>\n"+
         "        <td>"+fmt.format(data_period_date)+"</td>\n"+
@@ -176,6 +176,6 @@ public class PeriodAmount
         "        <td>"+data_z_pai+"</td>\n"+
         "\n";
     	
-    	return s;
+    	return echoStr;
     }
 }
