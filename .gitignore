@@ -1,4 +1,14 @@
+
+/build/
+/bin/
+*/build/
+*/bin/
+
+# Compiled class file
+
 *.class
+
+
 
 # BlueJ files
 *.ctxt
