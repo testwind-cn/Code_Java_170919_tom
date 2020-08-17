@@ -1,6 +1,10 @@
 
 /build/
 /bin/
+
+*/.idea/
+*/.settings/
+*/target/
 */build/
 */bin/
 */deployments/
