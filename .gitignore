@@ -36,6 +36,8 @@ Navicat/Premium/profiles/AutoSave/
 Navicat/Premium/logs/
 # navicat 数据库文件
 
+**/*.iml
+
 # wangjun add
 
 
